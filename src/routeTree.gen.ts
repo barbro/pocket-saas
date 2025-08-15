@@ -14,11 +14,12 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './pages/__root'
 import { Route as AppImport } from './pages/_app'
+import { Route as AppIndexImport } from './pages/_app/index'
+import { Route as AppStepStepNumberSectionNumberImport } from './pages/_app/step.$stepNumber.$sectionNumber'
 
 // Create Virtual Routes
 
 const SigninLazyImport = createFileRoute('/signin')()
-const AppIndexLazyImport = createFileRoute('/_app/')()
 
 // Create/Update Routes
 
@@ -32,10 +33,16 @@ const AppRoute = AppImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AppIndexLazyRoute = AppIndexLazyImport.update({
+const AppIndexRoute = AppIndexImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
-} as any).lazy(() => import('./pages/_app/index.lazy').then((d) => d.Route))
+} as any)
+
+const AppStepStepNumberSectionNumberRoute =
+  AppStepStepNumberSectionNumberImport.update({
+    path: '/step/$stepNumber/$sectionNumber',
+    getParentRoute: () => AppRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -59,7 +66,14 @@ declare module '@tanstack/react-router' {
       id: '/_app/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof AppIndexLazyImport
+      preLoaderRoute: typeof AppIndexImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/step/$stepNumber/$sectionNumber': {
+      id: '/_app/step/$stepNumber/$sectionNumber'
+      path: '/step/$stepNumber/$sectionNumber'
+      fullPath: '/step/$stepNumber/$sectionNumber'
+      preLoaderRoute: typeof AppStepStepNumberSectionNumberImport
       parentRoute: typeof AppImport
     }
   }
@@ -68,11 +82,13 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface AppRouteChildren {
-  AppIndexLazyRoute: typeof AppIndexLazyRoute
+  AppIndexRoute: typeof AppIndexRoute
+  AppStepStepNumberSectionNumberRoute: typeof AppStepStepNumberSectionNumberRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppIndexLazyRoute: AppIndexLazyRoute,
+  AppIndexRoute: AppIndexRoute,
+  AppStepStepNumberSectionNumberRoute: AppStepStepNumberSectionNumberRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
@@ -80,27 +96,35 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 export interface FileRoutesByFullPath {
   '': typeof AppRouteWithChildren
   '/signin': typeof SigninLazyRoute
-  '/': typeof AppIndexLazyRoute
+  '/': typeof AppIndexRoute
+  '/step/$stepNumber/$sectionNumber': typeof AppStepStepNumberSectionNumberRoute
 }
 
 export interface FileRoutesByTo {
   '/signin': typeof SigninLazyRoute
-  '/': typeof AppIndexLazyRoute
+  '/': typeof AppIndexRoute
+  '/step/$stepNumber/$sectionNumber': typeof AppStepStepNumberSectionNumberRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_app': typeof AppRouteWithChildren
   '/signin': typeof SigninLazyRoute
-  '/_app/': typeof AppIndexLazyRoute
+  '/_app/': typeof AppIndexRoute
+  '/_app/step/$stepNumber/$sectionNumber': typeof AppStepStepNumberSectionNumberRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/signin' | '/'
+  fullPaths: '' | '/signin' | '/' | '/step/$stepNumber/$sectionNumber'
   fileRoutesByTo: FileRoutesByTo
-  to: '/signin' | '/'
-  id: '__root__' | '/_app' | '/signin' | '/_app/'
+  to: '/signin' | '/' | '/step/$stepNumber/$sectionNumber'
+  id:
+    | '__root__'
+    | '/_app'
+    | '/signin'
+    | '/_app/'
+    | '/_app/step/$stepNumber/$sectionNumber'
   fileRoutesById: FileRoutesById
 }
 
@@ -133,14 +157,19 @@ export const routeTree = rootRoute
     "/_app": {
       "filePath": "_app.tsx",
       "children": [
-        "/_app/"
+        "/_app/",
+        "/_app/step/$stepNumber/$sectionNumber"
       ]
     },
     "/signin": {
       "filePath": "signin.lazy.tsx"
     },
     "/_app/": {
-      "filePath": "_app/index.lazy.tsx",
+      "filePath": "_app/index.tsx",
+      "parent": "/_app"
+    },
+    "/_app/step/$stepNumber/$sectionNumber": {
+      "filePath": "_app/step.$stepNumber.$sectionNumber.tsx",
       "parent": "/_app"
     }
   }

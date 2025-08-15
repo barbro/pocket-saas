@@ -14,6 +14,8 @@ const GITHUB_REPO_URL =
 const POCKETBASE_DIR = path.join(cwd(), "pocketbase");
 
 const platform = os.platform();
+console.log(`Platform: ${platform}`);
+console.log(`${platform == "win32"}`);
 let arch = os.arch();
 if (platform === "linux" && arch === "x64") {
   // For Linux x64, we use the 'amd64' architecture
