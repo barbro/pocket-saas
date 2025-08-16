@@ -15,7 +15,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './pages/__root'
 import { Route as AppImport } from './pages/_app'
 import { Route as AppIndexImport } from './pages/_app/index'
-import { Route as AppStepStepNumberSectionNumberImport } from './pages/_app/step.$stepNumber.$sectionNumber'
+import { Route as AppStepStepNumberEntryNumberImport } from './pages/_app/step.$stepNumber.$entryNumber'
 
 // Create Virtual Routes
 
@@ -38,9 +38,9 @@ const AppIndexRoute = AppIndexImport.update({
   getParentRoute: () => AppRoute,
 } as any)
 
-const AppStepStepNumberSectionNumberRoute =
-  AppStepStepNumberSectionNumberImport.update({
-    path: '/step/$stepNumber/$sectionNumber',
+const AppStepStepNumberEntryNumberRoute =
+  AppStepStepNumberEntryNumberImport.update({
+    path: '/step/$stepNumber/$entryNumber',
     getParentRoute: () => AppRoute,
   } as any)
 
@@ -69,11 +69,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexImport
       parentRoute: typeof AppImport
     }
-    '/_app/step/$stepNumber/$sectionNumber': {
-      id: '/_app/step/$stepNumber/$sectionNumber'
-      path: '/step/$stepNumber/$sectionNumber'
-      fullPath: '/step/$stepNumber/$sectionNumber'
-      preLoaderRoute: typeof AppStepStepNumberSectionNumberImport
+    '/_app/step/$stepNumber/$entryNumber': {
+      id: '/_app/step/$stepNumber/$entryNumber'
+      path: '/step/$stepNumber/$entryNumber'
+      fullPath: '/step/$stepNumber/$entryNumber'
+      preLoaderRoute: typeof AppStepStepNumberEntryNumberImport
       parentRoute: typeof AppImport
     }
   }
@@ -83,12 +83,12 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppIndexRoute: typeof AppIndexRoute
-  AppStepStepNumberSectionNumberRoute: typeof AppStepStepNumberSectionNumberRoute
+  AppStepStepNumberEntryNumberRoute: typeof AppStepStepNumberEntryNumberRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppIndexRoute: AppIndexRoute,
-  AppStepStepNumberSectionNumberRoute: AppStepStepNumberSectionNumberRoute,
+  AppStepStepNumberEntryNumberRoute: AppStepStepNumberEntryNumberRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
@@ -97,13 +97,13 @@ export interface FileRoutesByFullPath {
   '': typeof AppRouteWithChildren
   '/signin': typeof SigninLazyRoute
   '/': typeof AppIndexRoute
-  '/step/$stepNumber/$sectionNumber': typeof AppStepStepNumberSectionNumberRoute
+  '/step/$stepNumber/$entryNumber': typeof AppStepStepNumberEntryNumberRoute
 }
 
 export interface FileRoutesByTo {
   '/signin': typeof SigninLazyRoute
   '/': typeof AppIndexRoute
-  '/step/$stepNumber/$sectionNumber': typeof AppStepStepNumberSectionNumberRoute
+  '/step/$stepNumber/$entryNumber': typeof AppStepStepNumberEntryNumberRoute
 }
 
 export interface FileRoutesById {
@@ -111,20 +111,20 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/signin': typeof SigninLazyRoute
   '/_app/': typeof AppIndexRoute
-  '/_app/step/$stepNumber/$sectionNumber': typeof AppStepStepNumberSectionNumberRoute
+  '/_app/step/$stepNumber/$entryNumber': typeof AppStepStepNumberEntryNumberRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/signin' | '/' | '/step/$stepNumber/$sectionNumber'
+  fullPaths: '' | '/signin' | '/' | '/step/$stepNumber/$entryNumber'
   fileRoutesByTo: FileRoutesByTo
-  to: '/signin' | '/' | '/step/$stepNumber/$sectionNumber'
+  to: '/signin' | '/' | '/step/$stepNumber/$entryNumber'
   id:
     | '__root__'
     | '/_app'
     | '/signin'
     | '/_app/'
-    | '/_app/step/$stepNumber/$sectionNumber'
+    | '/_app/step/$stepNumber/$entryNumber'
   fileRoutesById: FileRoutesById
 }
 
@@ -158,7 +158,7 @@ export const routeTree = rootRoute
       "filePath": "_app.tsx",
       "children": [
         "/_app/",
-        "/_app/step/$stepNumber/$sectionNumber"
+        "/_app/step/$stepNumber/$entryNumber"
       ]
     },
     "/signin": {
@@ -168,8 +168,8 @@ export const routeTree = rootRoute
       "filePath": "_app/index.tsx",
       "parent": "/_app"
     },
-    "/_app/step/$stepNumber/$sectionNumber": {
-      "filePath": "_app/step.$stepNumber.$sectionNumber.tsx",
+    "/_app/step/$stepNumber/$entryNumber": {
+      "filePath": "_app/step.$stepNumber.$entryNumber.tsx",
       "parent": "/_app"
     }
   }
